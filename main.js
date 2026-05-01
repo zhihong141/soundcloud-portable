@@ -7,6 +7,69 @@ let isMini = false;
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
 app.commandLine.appendSwitch('ignore-certificate-errors');
 
+function sendToWebview(js) {
+  if (!mainWindow) return;
+  mainWindow.webContents.executeJavaScript(`
+    (function() {
+      const wv = document.getElementById('sc-webview');
+      if (wv) wv.executeJavaScript(${JSON.stringify(js)}).catch(()=>{});
+    })();
+  `).catch(() => {});
+}
+
+function playPause() {
+  sendToWebview(`
+    (function() {
+      const selectors = [
+        'button.playControls__play',
+        'button[title="Play"]',
+        'button[title="Pause"]',
+        '.playControls__elements button:nth-child(2)',
+        'button.sc-button-play',
+        '[aria-label="Play"]',
+        '[aria-label="Pause"]',
+      ];
+      for (const sel of selectors) {
+        const el = document.querySelector(sel);
+        if (el) { el.click(); return; }
+      }
+      document.body.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 32, bubbles: true }));
+    })();
+  `);
+}
+
+function skipNext() {
+  sendToWebview(`
+    (function() {
+      const selectors = [
+        'button.skipControl__next',
+        '[aria-label="Next"]',
+        'button[title="Next"]',
+      ];
+      for (const sel of selectors) {
+        const el = document.querySelector(sel);
+        if (el) { el.click(); return; }
+      }
+    })();
+  `);
+}
+
+function skipPrev() {
+  sendToWebview(`
+    (function() {
+      const selectors = [
+        'button.skipControl__previous',
+        '[aria-label="Previous"]',
+        'button[title="Previous"]',
+      ];
+      for (const sel of selectors) {
+        const el = document.querySelector(sel);
+        if (el) { el.click(); return; }
+      }
+    })();
+  `);
+}
+
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 1100,
@@ -120,31 +183,7 @@ ipcMain.on('move-mini', (e, { dx, dy }) => {
   const [x, y] = miniWindow.getPosition();
   miniWindow.setPosition(x + dx, y + dy);
 });
-function sendToWebview(js) {
-  if (!mainWindow) return;
-  mainWindow.webContents.executeJavaScript(`
-    const wv = document.getElementById('sc-webview');
-    if (wv) wv.executeJavaScript(${JSON.stringify(js)});
-  `);
-}
 
-ipcMain.on('mini-play-pause', () => {
-  sendToWebview(`
-    const btn = document.querySelector('.playControls__play, .playButton, [class*="playControl"]');
-    if (btn) btn.click();
-  `);
-});
-
-ipcMain.on('mini-next', () => {
-  sendToWebview(`
-    const btn = document.querySelector('.skipControl__next, [class*="skipControl"][class*="next"]');
-    if (btn) btn.click();
-  `);
-});
-
-ipcMain.on('mini-prev', () => {
-  sendToWebview(`
-    const btn = document.querySelector('.skipControl__previous, [class*="skipControl"][class*="prev"]');
-    if (btn) btn.click();
-  `);
-});
+ipcMain.on('mini-play-pause', () => playPause());
+ipcMain.on('mini-next', () => skipNext());
+ipcMain.on('mini-prev', () => skipPrev());
