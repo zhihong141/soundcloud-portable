@@ -156,10 +156,16 @@
     .wc.max   { background: #28c840; }
 
     webview {
-      width: 100%;
-      height: calc(100vh - var(--titlebar-h));
-      display: block;
-    }
+  width: 100%;
+  height: calc(100vh - var(--titlebar-h));
+  display: flex;
+  flex: 1;
+  position: absolute;
+  top: var(--titlebar-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 
     #loader {
       position: fixed;
