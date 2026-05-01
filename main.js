@@ -120,3 +120,31 @@ ipcMain.on('move-mini', (e, { dx, dy }) => {
   const [x, y] = miniWindow.getPosition();
   miniWindow.setPosition(x + dx, y + dy);
 });
+function sendToWebview(js) {
+  if (!mainWindow) return;
+  mainWindow.webContents.executeJavaScript(`
+    const wv = document.getElementById('sc-webview');
+    if (wv) wv.executeJavaScript(${JSON.stringify(js)});
+  `);
+}
+
+ipcMain.on('mini-play-pause', () => {
+  sendToWebview(`
+    const btn = document.querySelector('.playControls__play, .playButton, [class*="playControl"]');
+    if (btn) btn.click();
+  `);
+});
+
+ipcMain.on('mini-next', () => {
+  sendToWebview(`
+    const btn = document.querySelector('.skipControl__next, [class*="skipControl"][class*="next"]');
+    if (btn) btn.click();
+  `);
+});
+
+ipcMain.on('mini-prev', () => {
+  sendToWebview(`
+    const btn = document.querySelector('.skipControl__previous, [class*="skipControl"][class*="prev"]');
+    if (btn) btn.click();
+  `);
+});
