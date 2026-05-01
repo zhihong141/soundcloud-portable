@@ -57,7 +57,6 @@ If no icon file exists, electron-builder will use a default icon.
 
 ## Notes
 
-- Login to SoundCloud once and it stays logged in (cookies are persisted)
-- The mini player is cosmetic for now — it shows a floating widget while
-  the main window hides. The actual audio keeps playing in the background.
+- Login to SoundCloud doesn't work for now due to some issue
+- The mini player function as a floating widget while the main window hides. The actual audio keeps playing in the background.
 - To go back to the full player from mini mode, click the ⤢ button.
