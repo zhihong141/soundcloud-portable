@@ -223,6 +223,18 @@
   // Expand back to full player
   document.getElementById('btn-expand').onclick = () => ipcRenderer.send('expand-player');
 
+const playBtn = document.getElementById('btn-play');
+let isPlaying = false;
+
+playBtn.onclick = () => {
+  ipcRenderer.send('mini-play-pause');
+  isPlaying = !isPlaying;
+  playBtn.innerHTML = isPlaying ? '&#9646;&#9646;' : '&#9654;';
+};
+
+document.getElementById('btn-next').onclick = () => ipcRenderer.send('mini-next');
+document.getElementById('btn-prev').onclick = () => ipcRenderer.send('mini-prev');
+
   // Drag to move
   let dragging = false, startX, startY;
 
