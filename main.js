@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Tray, Menu, screen } = require('electron');
+const { app, BrowserWindow, ipcMain, screen } = require('electron');
 const path = require('path');
 
 let mainWindow;
@@ -16,9 +16,10 @@ function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      webviewTag: true,
+      backgroundThrottling: false,
+      webSecurity: false,
     },
-    icon: path.join(__dirname, 'assets', 'icon.png'),
-    titleBarStyle: 'hidden',
     show: false,
   });
 
@@ -57,10 +58,7 @@ function createMiniWindow() {
 
   miniWindow.loadFile('mini.html');
   miniWindow.once('ready-to-show', () => miniWindow.show());
-
-  miniWindow.on('closed', () => {
-    miniWindow = null;
-  });
+  miniWindow.on('closed', () => { miniWindow = null; });
 }
 
 app.whenReady().then(createMainWindow);
@@ -73,7 +71,6 @@ app.on('activate', () => {
   if (!mainWindow) createMainWindow();
 });
 
-// IPC: toggle mini player
 ipcMain.on('toggle-mini', () => {
   if (!isMini) {
     mainWindow.hide();
@@ -87,18 +84,16 @@ ipcMain.on('toggle-mini', () => {
   }
 });
 
-// Mini player expand back
 ipcMain.on('expand-player', () => {
   if (miniWindow) miniWindow.close();
   if (mainWindow) {
     mainWindow.show();
     mainWindow.focus();
-    mainWindow.restore(); // un-minimize if minimized
+    mainWindow.restore();
   }
   isMini = false;
 });
 
-// Window controls
 ipcMain.on('minimize-window', () => mainWindow && mainWindow.minimize());
 ipcMain.on('maximize-window', () => {
   if (!mainWindow) return;
@@ -106,7 +101,6 @@ ipcMain.on('maximize-window', () => {
 });
 ipcMain.on('close-window', () => app.quit());
 
-// Drag mini window
 ipcMain.on('move-mini', (e, { dx, dy }) => {
   if (!miniWindow) return;
   const [x, y] = miniWindow.getPosition();
