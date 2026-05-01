@@ -106,11 +106,12 @@ function createMainWindow() {
 
   mainWindow.once('ready-to-show', () => mainWindow.show());
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-    if (miniWindow) miniWindow.close();
+  // Allow all permissions
+  mainWindow.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
+    callback(true);
   });
-}
+
+  mainWindow.webContents.session.setPermissionCheckHandler(() => true);
 
 function createMiniWindow() {
   const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
