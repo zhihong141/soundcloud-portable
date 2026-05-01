@@ -25,7 +25,6 @@
       user-select: none;
     }
 
-    /* ── Title bar ─────────────────────────────────── */
     #titlebar {
       height: var(--titlebar-h);
       background: var(--surface);
@@ -47,10 +46,7 @@
       cursor: default;
     }
 
-    #titlebar .logo svg {
-      width: 22px;
-      height: 22px;
-    }
+    #titlebar .logo svg { width: 22px; height: 22px; }
 
     #titlebar .logo span {
       font-size: 13px;
@@ -59,7 +55,6 @@
       letter-spacing: 0.3px;
     }
 
-    /* Nav buttons */
     #nav-btns {
       display: flex;
       gap: 4px;
@@ -71,8 +66,7 @@
       background: none;
       border: 1px solid var(--border);
       color: var(--muted);
-      width: 28px;
-      height: 28px;
+      width: 28px; height: 28px;
       border-radius: 50%;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
@@ -80,12 +74,8 @@
       transition: all 0.15s;
     }
 
-    #nav-btns button:hover {
-      border-color: var(--orange);
-      color: var(--orange);
-    }
+    #nav-btns button:hover { border-color: var(--orange); color: var(--orange); }
 
-    /* URL bar */
     #url-bar {
       flex: 1;
       -webkit-app-region: no-drag;
@@ -123,7 +113,6 @@
     }
     #url-bar .go-btn:hover { color: var(--orange); }
 
-    /* Right controls */
     #right-controls {
       display: flex;
       align-items: center;
@@ -132,21 +121,6 @@
       -webkit-app-region: no-drag;
     }
 
-    .ctrl-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      width: 30px;
-      height: 30px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 6px;
-      font-size: 13px;
-      transition: all 0.15s;
-    }
-    .ctrl-btn:hover { background: var(--border); color: var(--text); }
-
-    /* Mini player btn */
     #mini-btn {
       background: none;
       border: 1px solid var(--border);
@@ -161,12 +135,8 @@
       display: flex; align-items: center; gap: 5px;
       transition: all 0.15s;
     }
-    #mini-btn:hover {
-      border-color: var(--orange);
-      color: var(--orange);
-    }
+    #mini-btn:hover { border-color: var(--orange); color: var(--orange); }
 
-    /* Window controls */
     #win-controls {
       display: flex;
       gap: 6px;
@@ -174,26 +144,23 @@
     }
 
     .wc {
-      width: 12px;
-      height: 12px;
+      width: 12px; height: 12px;
       border-radius: 50%;
       border: none;
       cursor: pointer;
       transition: filter 0.15s;
     }
     .wc:hover { filter: brightness(1.3); }
-    .wc.close   { background: #ff5f57; }
-    .wc.min     { background: #febc2e; }
-    .wc.max     { background: #28c840; }
+    .wc.close { background: #ff5f57; }
+    .wc.min   { background: #febc2e; }
+    .wc.max   { background: #28c840; }
 
-    /* ── Webview ───────────────────────────────────── */
     webview {
       width: 100%;
       height: calc(100vh - var(--titlebar-h));
       display: block;
     }
 
-    /* ── Loading overlay ───────────────────────────── */
     #loader {
       position: fixed;
       inset: var(--titlebar-h) 0 0 0;
@@ -209,9 +176,7 @@
 
     #loader.hidden { opacity: 0; pointer-events: none; }
 
-    .sc-logo-big svg {
-      width: 60px; height: 60px;
-    }
+    .sc-logo-big svg { width: 60px; height: 60px; }
 
     .spinner {
       width: 32px; height: 32px;
@@ -223,33 +188,21 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    #loader p {
-      color: var(--muted);
-      font-size: 12px;
-    }
+    #loader p { color: var(--muted); font-size: 12px; }
   </style>
 </head>
 <body>
 
 <div id="titlebar">
-  <!-- Window dots (macOS style) -->
   <div id="win-controls">
-    <button class="wc close"  id="btn-close" title="Quit"></button>
-    <button class="wc min"    id="btn-min"   title="Minimize"></button>
-    <button class="wc max"    id="btn-max"   title="Maximize"></button>
+    <button class="wc close" id="btn-close" title="Quit"></button>
+    <button class="wc min"   id="btn-min"   title="Minimize"></button>
+    <button class="wc max"   id="btn-max"   title="Maximize"></button>
   </div>
 
   <div class="logo">
-    <!-- SoundCloud logo SVG -->
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M1.175 12.225c-.017 0-.032.001-.047.003C.504 12.325 0 12.87 0 13.525c0 .698.566 1.264 1.264 1.264h14.76c.698 0 1.264-.566 1.264-1.264V8.788a4.73 4.73 0 00-4.73-4.73c-1.78 0-3.33.984-4.15 2.44a3.174 3.174 0 00-1.59-.428c-1.756 0-3.18 1.424-3.18 3.18 0 .087.004.173.011.258-.276.102-.488.37-.488.697l-.006-.98z" fill="#ff5500"/>
-      <path d="M1.175 12.225c-.017 0-.032.001-.047.003C.504 12.325 0 12.87 0 13.525c0 .698.566 1.264 1.264 1.264h14.76c.698 0 1.264-.566 1.264-1.264V8.788a4.73 4.73 0 00-4.73-4.73c-1.78 0-3.33.984-4.15 2.44a3.174 3.174 0 00-1.59-.428c-1.756 0-3.18 1.424-3.18 3.18 0 .087.004.173.011.258-.276.102-.488.37-.488.697l-.006-.98z" fill="url(#sc-grad)"/>
-      <defs>
-        <linearGradient id="sc-grad" x1="0" y1="4" x2="17" y2="15" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#ff7700"/>
-          <stop offset="1" stop-color="#ff3300"/>
-        </linearGradient>
-      </defs>
     </svg>
     <span>SoundCloud</span>
   </div>
@@ -277,7 +230,6 @@
   </div>
 </div>
 
-<!-- Loading overlay -->
 <div id="loader">
   <div class="sc-logo-big">
     <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -302,20 +254,16 @@
   const urlInput = document.getElementById('url-input');
   const loader = document.getElementById('loader');
 
-  // Window controls
   document.getElementById('btn-close').onclick  = () => ipcRenderer.send('close-window');
   document.getElementById('btn-min').onclick    = () => ipcRenderer.send('minimize-window');
   document.getElementById('btn-max').onclick    = () => ipcRenderer.send('maximize-window');
 
-  // Nav controls
   document.getElementById('btn-back').onclick   = () => webview.goBack();
   document.getElementById('btn-fwd').onclick    = () => webview.goForward();
   document.getElementById('btn-reload').onclick = () => webview.reload();
 
-  // Mini player toggle
   document.getElementById('mini-btn').onclick = () => ipcRenderer.send('toggle-mini');
 
-  // URL bar
   function navigate() {
     let url = urlInput.value.trim();
     if (!url.startsWith('http')) url = 'https://' + url;
@@ -324,7 +272,6 @@
   document.getElementById('btn-go').onclick = navigate;
   urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') navigate(); });
 
-  // Update URL bar on navigation
   webview.addEventListener('did-navigate', e => {
     urlInput.value = e.url.replace(/^https?:\/\//, '');
   });
@@ -332,21 +279,24 @@
     urlInput.value = e.url.replace(/^https?:\/\//, '');
   });
 
-  // Hide loader when page loads
+  // Hide loader
   let loaderTimer;
   function hideLoader() {
     clearTimeout(loaderTimer);
-    setTimeout(() => loader.classList.add('hidden'), 300);
+    loader.classList.add('hidden');
   }
 
   webview.addEventListener('did-finish-load', hideLoader);
   webview.addEventListener('did-stop-loading', hideLoader);
+  webview.addEventListener('did-navigate', hideLoader);
 
-  // Fallback: force-hide after 6 seconds no matter what
+  // Force hide after 4 seconds no matter what
+  loaderTimer = setTimeout(hideLoader, 4000);
+
   webview.addEventListener('did-start-loading', () => {
     loader.classList.remove('hidden');
     clearTimeout(loaderTimer);
-    loaderTimer = setTimeout(hideLoader, 6000);
+    loaderTimer = setTimeout(hideLoader, 4000);
   });
 </script>
 </body>
