@@ -1,9 +1,11 @@
-const { app, BrowserWindow, ipcMain, screen } = require('electron');
-const path = require('path');
+const { app, BrowserWindow, ipcMain, screen, session } = require('electron');
 
 let mainWindow;
 let miniWindow;
 let isMini = false;
+
+app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
+app.commandLine.appendSwitch('ignore-certificate-errors');
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
@@ -25,9 +27,21 @@ function createMainWindow() {
 
   mainWindow.loadFile('index.html');
 
-  mainWindow.once('ready-to-show', () => {
-    mainWindow.show();
+  mainWindow.webContents.setUserAgent(
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+  );
+
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    const headers = { ...details.requestHeaders };
+    delete headers['X-Requested-With'];
+    Object.keys(headers).forEach(key => {
+      if (key.toLowerCase().includes('electron')) delete headers[key];
+    });
+    headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+    callback({ requestHeaders: headers });
   });
+
+  mainWindow.once('ready-to-show', () => mainWindow.show());
 
   mainWindow.on('closed', () => {
     mainWindow = null;
